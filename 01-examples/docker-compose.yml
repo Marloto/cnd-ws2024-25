@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+    db:
+        image: mariadb:11.1
+        ports:
+          - "3306:3306"
+        environment:
+          MARIADB_ROOT_PASSWORD: 12345678
+          MARIADB_DATABASE: example
+          MARIADB_USER: example
+          MARIADB_PASSWORD: example
