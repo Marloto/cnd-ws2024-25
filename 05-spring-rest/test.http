@@ -1,0 +1,33 @@
+GET http://localhost:8080/
+
+###
+
+GET localhost:8080/posts
+
+###
+
+POST localhost:8080/posts
+Content-Type: application/json
+
+{
+  "title": "Test123",
+  "content": "abc..."
+}
+
+###
+
+GET localhost:8080/posts/0fb40e78-1dec-416d-9ed0-d35dec40a597
+
+###
+
+DELETE localhost:8080/posts/e49dcac1-eb4f-42af-909a-9e588db63682
+
+###
+
+PUT localhost:8080/posts/e49dcac1-eb4f-42af-909a-9e588db63682
+Content-Type: application/json
+
+{
+  "title": "Test123",
+  "content": "changed..."
+}
