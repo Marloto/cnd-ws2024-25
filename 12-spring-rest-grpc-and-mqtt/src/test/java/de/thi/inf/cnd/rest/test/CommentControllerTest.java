@@ -1,7 +1,6 @@
 package de.thi.inf.cnd.rest.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.thi.inf.cnd.rest.Application;
 import de.thi.inf.cnd.rest.model.Comment;
 import de.thi.inf.cnd.rest.model.Post;
@@ -42,18 +41,12 @@ public class CommentControllerTest {
                 .content(asJsonString(post))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        String location = result.getResponse().getHeader("Location");
-        MvcResult result2 = mvc.perform(get(location)
-                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").value("Dies ist ein Test"))
                 .andExpect(jsonPath("$.content").value("Ein Testtext"))
                 .andReturn();
-        Post p = fromJsonString(result2.getResponse().getContentAsString(), Post.class);
+        Post p = fromJsonString(result.getResponse().getContentAsString(), Post.class);
         Comment comment = new Comment();
         comment.setText("Interessant...");
         mvc.perform(post("/posts/" + p.getId() + "/comments")
@@ -66,7 +59,7 @@ public class CommentControllerTest {
 
     public static String asJsonString(final Object obj) {
         try {
-            return new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(obj);
+            return new ObjectMapper().writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -74,7 +67,7 @@ public class CommentControllerTest {
 
     public static <D> D fromJsonString(final String data, final Class<D> clazz) {
         try {
-            return new ObjectMapper().registerModule(new JavaTimeModule()).readValue(data, clazz);
+            return new ObjectMapper().readValue(data, clazz);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

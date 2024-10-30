@@ -5,3 +5,8 @@ lib
 
 .idea
 .vscode
+target
+
+.settings
+.classpath
+.project

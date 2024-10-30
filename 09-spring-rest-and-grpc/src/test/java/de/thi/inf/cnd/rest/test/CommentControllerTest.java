@@ -39,15 +39,15 @@ public class CommentControllerTest {
         post.setTitle("Dies ist ein Test");
         post.setContent("Ein Testtext");
         MvcResult result = mvc.perform(post("/posts")
-                .content(asJsonString(post))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(post))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         String location = result.getResponse().getHeader("Location");
         MvcResult result2 = mvc.perform(get(location)
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.title").value("Dies ist ein Test"))
@@ -57,9 +57,9 @@ public class CommentControllerTest {
         Comment comment = new Comment();
         comment.setText("Interessant...");
         mvc.perform(post("/posts/" + p.getId() + "/comments")
-                .content(asJsonString(comment))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                        .content(asJsonString(comment))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.text").value("Interessant..."));
     }

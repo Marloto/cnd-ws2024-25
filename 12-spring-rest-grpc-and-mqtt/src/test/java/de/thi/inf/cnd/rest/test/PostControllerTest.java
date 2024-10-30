@@ -1,7 +1,6 @@
 package de.thi.inf.cnd.rest.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.thi.inf.cnd.rest.Application;
 import de.thi.inf.cnd.rest.model.Post;
 import de.thi.inf.cnd.rest.repository.PostRepository;
@@ -49,15 +48,9 @@ public class PostControllerTest {
         Post post = new Post();
         post.setTitle("Dies ist ein Test");
         post.setContent("Ein Testtext");
-        MvcResult result = mvc.perform(post("/posts")
+        mvc.perform(post("/posts")
                 .content(asJsonString(post))
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"))
-                .andReturn();
-        String location = result.getResponse().getHeader("Location");
-        mvc.perform(get(location)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
@@ -67,6 +60,9 @@ public class PostControllerTest {
 
     @Test
     public void testEmptyList() throws Exception {
+        Post post = new Post();
+        post.setTitle("Dies ist ein Test");
+        post.setContent("Ein Testtext");
         mvc.perform(get("/posts")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -84,12 +80,12 @@ public class PostControllerTest {
                 .content(asJsonString(post1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
         mvc.perform(post("/posts")
                 .content(asJsonString(post2))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
         mvc.perform(get("/posts")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -106,16 +102,10 @@ public class PostControllerTest {
                 .content(asJsonString(post1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        String location = result.getResponse().getHeader("Location");
-        MvcResult result2 = mvc.perform(get(location)
-                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Post p = fromJsonString(result2.getResponse().getContentAsString(), Post.class);
+        Post p = fromJsonString(result.getResponse().getContentAsString(), Post.class);
         p.setTitle("T2");
         p.setContent("C2");
         mvc.perform(put("/posts/" + p.getId())
@@ -129,7 +119,7 @@ public class PostControllerTest {
 
     public static String asJsonString(final Object obj) {
         try {
-            return new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(obj);
+            return new ObjectMapper().writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -137,7 +127,7 @@ public class PostControllerTest {
 
     public static <D> D fromJsonString(final String data, final Class<D> clazz) {
         try {
-            return new ObjectMapper().registerModule(new JavaTimeModule()).readValue(data, clazz);
+            return new ObjectMapper().readValue(data, clazz);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -50,15 +50,15 @@ public class PostControllerTest {
         post.setTitle("Dies ist ein Test");
         post.setContent("Ein Testtext");
         MvcResult result = mvc.perform(post("/posts")
-                .content(asJsonString(post))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(post))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"))
                 .andReturn();
         String location = result.getResponse().getHeader("Location");
         mvc.perform(get(location)
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Dies ist ein Test"))
@@ -67,8 +67,11 @@ public class PostControllerTest {
 
     @Test
     public void testEmptyList() throws Exception {
+        Post post = new Post();
+        post.setTitle("Dies ist ein Test");
+        post.setContent("Ein Testtext");
         mvc.perform(get("/posts")
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty());
@@ -81,17 +84,17 @@ public class PostControllerTest {
         Post post2 = new Post();
         post2.setTitle("T2");
         mvc.perform(post("/posts")
-                .content(asJsonString(post1))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(post1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
         mvc.perform(post("/posts")
-                .content(asJsonString(post2))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(post2))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
         mvc.perform(get("/posts")
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].title", containsInAnyOrder("T1", "T2")));
@@ -103,15 +106,15 @@ public class PostControllerTest {
         post1.setTitle("T1");
         post1.setContent("C1");
         MvcResult result = mvc.perform(post("/posts")
-                .content(asJsonString(post1))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(post1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         String location = result.getResponse().getHeader("Location");
         MvcResult result2 = mvc.perform(get(location)
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -119,9 +122,9 @@ public class PostControllerTest {
         p.setTitle("T2");
         p.setContent("C2");
         mvc.perform(put("/posts/" + p.getId())
-                .content(asJsonString(p))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(p))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("T2"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").value("C2"));
