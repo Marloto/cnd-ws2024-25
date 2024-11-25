@@ -1,0 +1,17 @@
+@id=d7062459-cb46-4176-94b3-9409ae020359
+
+GET http://localhost:12345/api/v1/posts
+
+###
+
+POST http://localhost:12345/api/v1/posts
+Content-Type: application/json
+
+{
+  "title": "Test123",
+  "content": "abc..."
+}
+
+###
+
+GET http://localhost:12345/api/v1/posts/{{id}}

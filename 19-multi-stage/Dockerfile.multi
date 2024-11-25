@@ -1,0 +1,14 @@
+FROM alpine AS builder
+RUN apk add --update-cache cmake build-base \
+  && rm -rf /var/cache/apk/*
+WORKDIR /app
+COPY . ./
+RUN mkdir build && cd build && cmake .. && make all
+
+
+FROM alpine
+RUN apk add --update-cache libstdc++ \
+  && rm -rf /var/cache/apk/*
+WORKDIR /root
+COPY --from=builder /app/cmake_hello ./app
+CMD ["./app"]

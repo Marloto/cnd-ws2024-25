@@ -1,0 +1,6 @@
+FROM alpine
+RUN apk add --update-cache cmake build-base \
+  && rm -rf /var/cache/apk/*
+WORKDIR /app
+COPY . ./
+RUN mkdir build && cd build && cmake .. && make all

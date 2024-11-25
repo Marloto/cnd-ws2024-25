@@ -1,0 +1,15 @@
+services:
+  # beispiel: docker run -p 12345:80 nginx
+  app1: # name des dienstes
+    image: nginx
+    ports:
+      - "12345:80"
+  app2: # name des dienstes
+    image: nginx
+    ports:
+      - "12346:80"
+  # docker build -t app3 .
+  # docker run app3
+  # docker compose up baut nicht automatisch
+  app3:
+    build: .

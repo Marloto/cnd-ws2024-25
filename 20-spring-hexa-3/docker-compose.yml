@@ -1,0 +1,59 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+      - "9898:9898"
+    # Tipp: Konfiguration über Umgebungsvariablen, oder über 
+    # Dateien in den Container gemounted werden
+    restart: unless-stopped
+    environment:
+      - MQTT_BROKER=tcp://localhost:1883
+      # Erzähle Spring, ob die Tabellen neu erstellt werden od. aktualisiert werden
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/${MYSQL_DATABASE}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.jdbc.Driver
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306"
+    # Datenbanken haben Nutzdaten, die müssen gesichert werden, Volumes als Werkzeug
+    # Dockerfile könnte direkt Volumes definieren
+    # Docker Compose könnte genauer beschreiben wo hin mit den Daten
+    volumes:
+      # Erweitert den docker create/run um -v konfiguration
+      - db_data:/var/lib/mysql
+      # - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+  broker:
+    image: eclipse-mosquitto
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    ports:
+      - 1883:1883
+      - 9001:9001
+    restart: unless-stopped
+  dbadmin:
+    image: 'phpmyadmin/phpmyadmin'
+    environment:
+      - PMA_HOST=db
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - PMA_ABSOLUTE_URI=http://localhost:12345/admin/
+    ports:
+      - '8081:80'
+
+# docker volume create ...
+volumes:
+  db_data:
+  mosquitto_data:
+  mosquitto_log:
