@@ -1,0 +1,25 @@
+### Hello World
+GET http://localhost:3000/hello HTTP/1.1
+
+### CPU-Last erzeugen
+GET http://localhost:3000/stress/cpu/10 HTTP/1.1
+
+### Counter erhöhen
+GET http://localhost:3000/counter HTTP/1.1
+
+### Log Message
+POST http://localhost:3000/log HTTP/1.1
+Content-Type: application/json
+
+{
+    "message": "Hello, World!"
+}
+
+### Absturz simulieren
+GET http://localhost:3000/crash HTTP/1.1
+
+### Health check
+GET http://localhost:3000/health HTTP/1.1
+
+### Toggle health
+GET http://localhost:3000/toggle-health HTTP/1.1
