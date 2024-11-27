@@ -28,6 +28,12 @@ Testen Sie das Dockerfile durch:
 - Starten eines Containers
 - Überprüfen der Erreichbarkeit der Basis-Route (`/`, `/hello` oder `/health`), Fehler bzgl. Datenbanken sind erwartbar
 
+Tipp, für FastAPI kann folgender CMD zum Starten genutzt werden:
+
+```dockerfile
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "3000"]
+```
+
 ## Aufgabe 2
 
 Erweitern Sie das Setup um ein docker-compose.yml mit:
