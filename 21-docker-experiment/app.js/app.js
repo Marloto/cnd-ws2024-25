@@ -26,6 +26,7 @@ let healthStatus = true;
 async function connectToMongo() {
   try {
     await mongoClient.connect();
+    db = mongoClient.db();
     console.log('MongoDB connected');
   } catch (err) {
     console.error('MongoDB connection error:', err);
