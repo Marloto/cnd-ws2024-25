@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo
+  labels:
+    app: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      volumes:
+        - name: demo-config-volume
+          configMap:
+            name: demo-config2
+            items:
+              - key: config
+                path: config.json
+      containers:
+        - name: demo
+          image: marloto/express-example
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - mountPath: /usr/src/app/config/
+              name: demo-config-volume
+              readOnly: true
+          env:
+            - name: GREETING
+              valueFrom:
+                configMapKeyRef:
+                  name: demo-config
+                  key: greeting
+          resources:
+            # Min. im Knoten müssen folgende Ressourcen verfügbar sein
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            # Was darf der Pod max. nutzen, wenn zu gering kann der Dienst nicht richtig arbeiten
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+# anwendung übernimmt env nicht

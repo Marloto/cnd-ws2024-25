@@ -1,0 +1,4 @@
+database:
+  hostPath:
+    enabled: true
+    path: /Users/seb/Entwicklung/THI/Repositories/thi-snippets/cnd/ws-2024/26-spring-hexa-4/database

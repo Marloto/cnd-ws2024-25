@@ -1,0 +1,8 @@
+Danke für die Installation von {{ .Chart.Name }}.
+
+Ihre Release wurde mit folgenden Details installiert:
+--------------------------------------------------
+  Name: {{ .Release.Name }}
+  Namespace: {{ .Release.Namespace }}
+  Chart Version: {{ .Chart.Version }}
+  App Version: {{ .Chart.AppVersion }}

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+data:
+  greeting: 'Hello, Universe!'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config2
+data:
+  config: |
+    {"greeting": "Hello, Mars!"}

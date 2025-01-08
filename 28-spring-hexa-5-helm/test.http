@@ -1,0 +1,17 @@
+@id=c4b7914c-462d-4cbe-b028-41db1981a020
+
+GET http://localhost:8080/posts
+
+###
+
+POST http://localhost:8080/posts
+Content-Type: application/json
+
+{
+  "title": "Test123",
+  "content": "abc..."
+}
+
+###
+
+GET http://localhost:8080/posts/{{id}}

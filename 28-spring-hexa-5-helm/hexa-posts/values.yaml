@@ -1,0 +1,17 @@
+database:
+  image: mysql:5.7
+  user: user
+  name: somedb
+  rootPassword: 2B62661B-D644-4A81-91DA-F0DB0961CDF4
+  password: C1CD107B-AA58-498B-9D5A-9DBBF07B379F
+  storageSize: 3Gi
+  storageClass: database
+  hostPath:
+    enabled: false # use this to enable/disable the hostPath volume
+    storageSize: 10Gi
+    path: "" # use this for your hostPath
+ingress:
+  host: localhost
+  path: /
+posts:
+  image: cnd/hexa-posts:latest

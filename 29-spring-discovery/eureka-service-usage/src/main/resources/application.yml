@@ -1,0 +1,13 @@
+spring.application.name: sesa-service-usage
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+      base-path: /
+server:
+  port : 8081
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

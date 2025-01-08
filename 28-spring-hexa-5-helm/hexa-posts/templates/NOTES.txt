@@ -1,0 +1,3 @@
+For tests use:
+
+http://{{ .Values.ingress.host }}{{ .Values.ingress.path }}posts

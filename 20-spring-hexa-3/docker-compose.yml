@@ -8,7 +8,7 @@ services:
     # Dateien in den Container gemounted werden
     restart: unless-stopped
     environment:
-      - MQTT_BROKER=tcp://localhost:1883
+      - MQTT_BROKER=tcp://broker:1883
       # Erzähle Spring, ob die Tabellen neu erstellt werden od. aktualisiert werden
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/${MYSQL_DATABASE}

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: demo
+  labels:
+    app: demo
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+        - name: demo
+          image: marloto/simple-express-js:v1.3
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GREETING
+              value: '{{ .Values.something.hello }}'
+# .Values. greift auf Informationen in der values.yaml zu
+# Weitere Möglichkeiten: .Release -> Release basierte Informationen, .Chart -> Chart-Informationen, (.Cababilities -> Kubernetes Version Info)

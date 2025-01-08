@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hexa-database-volume
+  labels:
+    type: local
+{{- if .Values.database.hostPath.enabled }}
+spec:
+  storageClassName: {{ .Values.database.storageClass }}
+  capacity:
+    storage: {{ .Values.database.hostPath.storageSize }}
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: {{ .Values.database.hostPath.path }}
+{{- end }}
