@@ -12,14 +12,14 @@ mvn spring-boot:run
 _Run Some Client_
 
 ```
-cd eureka-client
+cd eureka-service-example
 mvn spring-boot:run
 ```
 
 _Run Other Client_
 
 ```
-cd eureka-client
+cd eureka-service-usage
 mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8081"
 ```
 
