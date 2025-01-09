@@ -16,6 +16,7 @@ public class ExampleRestController {
 
     @Value("${example.name:cnd-service-example}")
     private String targetService;
+    
     @GetMapping("/hello")
     public List<String> hello() {
         return discovery.getInstances(targetService).stream()
